@@ -1,0 +1,33 @@
+services:
+  postgresql:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: persons
+      POSTGRES_PASSWORD: persons
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+  backend:
+    image: backend-activity-image:latest
+    depends_on:
+      - postgresql
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+
+  frontend:
+    image: frontend-activity-image:latest 
+    depends_on:
+      - postgresql
+    ports:
+      - "80:80"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    name: "red-test"
+    driver: bridge
