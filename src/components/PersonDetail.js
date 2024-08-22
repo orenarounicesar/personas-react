@@ -1,111 +1,55 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './PersonDetail.css'; // Importa el archivo CSS
 
-const PersonForm = () => {
-  const [formData, setFormData] = useState({
-    identification_number: '',  // Ahora el identificador principal es identification_number
-    identification_type: '',
-    first_name1: '',
-    first_name2: '',
-    last_name1: '',
-    last_name2: '',
-    gender: '',
-    date_of_birth: '',
-  });
+const PersonDetail = () => {
+  const [identificationNumber, setIdentificationNumber] = useState('');
+  const [personData, setPersonData] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setIdentificationNumber(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:8000/people/${formData.identification_number}`, formData);  // Utiliza identification_number en lugar de personId
-      alert('Person updated successfully: ' + JSON.stringify(response.data));
+      const response = await axios.get(`http://localhost:8000/people/${identificationNumber}`);
+      setPersonData(response.data);
     } catch (error) {
-      console.error('Error updating person:', error);
-      alert('Error updating person: ' + error.message);
+      console.error('Error fetching person data:', error);
+      alert('Error fetching person data: ' + error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Identification Number:</label>
-        <input
-          type="text"
-          name="identification_number"
-          value={formData.identification_number}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Identification Type:</label>
-        <input
-          type="text"
-          name="identification_type"
-          value={formData.identification_type}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>First Name 1:</label>
-        <input
-          type="text"
-          name="first_name1"
-          value={formData.first_name1}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>First Name 2:</label>
-        <input
-          type="text"
-          name="first_name2"
-          value={formData.first_name2}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Last Name 1:</label>
-        <input
-          type="text"
-          name="last_name1"
-          value={formData.last_name1}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Last Name 2:</label>
-        <input
-          type="text"
-          name="last_name2"
-          value={formData.last_name2}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Gender:</label>
-        <input
-          type="text"
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Date of Birth:</label>
-        <input
-          type="date"
-          name="date_of_birth"
-          value={formData.date_of_birth}
-          onChange={handleChange}
-        />
-      </div>
-      <button type="submit">Update Person</button>
-    </form>
+    <div className="person-detail">
+      <h2>Consult Person Information</h2>
+      <form className="detail-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Identification Number</label>
+          <input
+            type="text"
+            value={identificationNumber}
+            onChange={handleChange}
+            placeholder="Enter ID Number"
+          />
+        </div>
+        <button className="submit-button" type="submit">Consult</button>
+      </form>
+      {personData && (
+        <div className="person-data">
+          <h3>Person Details</h3>
+          <p><strong>Identification Type:</strong> {personData.tipo_identificacion}</p>
+          <p><strong>First Name 1:</strong> {personData.nombre1}</p>
+          <p><strong>First Name 2:</strong> {personData.nombre2}</p>
+          <p><strong>Last Name 1:</strong> {personData.apellido1}</p>
+          <p><strong>Last Name 2:</strong> {personData.apellido2}</p>
+          <p><strong>Gender:</strong> {personData.sexo}</p>
+          <p><strong>Date of Birth:</strong> {personData.fecha_nacimiento}</p>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default PersonForm;
-
+export default PersonDetail;

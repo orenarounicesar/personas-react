@@ -10,13 +10,18 @@ services:
       - mynetwork
 
   backend:
-    image: backend-activity-image:latest
+    image: santiagoandresdavid/backend-activity-image:latest
     depends_on:
       - postgresql
     ports:
       - "8000:8000"
     networks:
       - mynetwork
+    environment:
+      DATABASE_USER: persons
+      DATABASE_PASSWORD: persons
+      DATABASE_HOST: personas-react-postgresql-1
+      DATABASE_NAME: persons
 
   frontend:
     image: frontend-activity-image:latest 
@@ -31,3 +36,4 @@ networks:
   mynetwork:
     name: "red-test"
     driver: bridge
+    external: true
