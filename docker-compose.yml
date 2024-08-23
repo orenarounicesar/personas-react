@@ -24,7 +24,7 @@ services:
       DATABASE_NAME: persons
 
   frontend:
-    image: frontend-activity-image:latest 
+    image: frontend-activity-image-2:latest 
     depends_on:
       - postgresql
     ports:

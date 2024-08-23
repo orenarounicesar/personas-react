@@ -35,8 +35,14 @@ const PersonForm = () => {
       }
     }
 
+    // Convertir el id a entero
+    const updatedFormData = {
+      ...formData,
+      id: parseInt(formData.id, 10), // Aquí se convierte el id a un entero
+    };
+
     try {
-      const response = await axios.put(`http://localhost:8000/people/${formData.numero_identificacion}`, formData);
+      const response = await axios.put(`http://localhost:3000/api/backend-nodejs/personas/${updatedFormData.id}`, updatedFormData);
       alert('Person updated successfully: ' + JSON.stringify(response.data));
     } catch (error) {
       console.error('Error updating person:', error);
@@ -47,6 +53,17 @@ const PersonForm = () => {
   return (
     <form className="person-form" onSubmit={handleSubmit}>
       <h2>Update Person Information</h2>
+      <div className="form-group">
+        <label>id</label>
+        <input
+          type="text"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          placeholder="Ingrese el id"
+          pattern="\d*"
+        />
+      </div>
       <div className="form-group">
         <label>Número de Identificación</label>
         <input
@@ -138,4 +155,3 @@ const PersonForm = () => {
 };
 
 export default PersonForm;
-  
