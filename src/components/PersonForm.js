@@ -42,7 +42,9 @@ const PersonForm = () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:3000/api/backend-nodejs/personas/${updatedFormData.id}`, updatedFormData);
+      const host = process.env.REACT_APP_HOST_NODE_BACKEND;
+      const port = process.env.REACT_APP_PORT_NODE_BACKEND;
+      const response = await axios.put(`http://${host}:${port}/api/backend-nodejs/personas/${updatedFormData.id}`, updatedFormData);
       alert('Person updated successfully: ' + JSON.stringify(response.data));
     } catch (error) {
       console.error('Error updating person:', error);

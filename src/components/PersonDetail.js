@@ -13,7 +13,9 @@ const PersonDetail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:8001/api/backend-python/people/${identificationNumber}`);
+      const host = process.env.REACT_APP_HOST_PYTHON_BACKEND;
+      const port = process.env.REACT_APP_PORT_PYTHON_BACKEND;
+      const response = await axios.get(`http://${host}:${port}/people/${identificationNumber}`);
       setPersonData(response.data);
     } catch (error) {
       console.error('Error fetching person data:', error);
