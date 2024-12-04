@@ -31,12 +31,6 @@ REACT_APP_PORT_PYTHON_BACKEND=22222
 ## instalacion
 
 ### primer paso 
-posicionate en el proyecto he instala las dependencias 
-```sh
-npm install 
-```
-
-### segundo paso 
 construye la imagen de la siguiente forma 
 ```sh
 docker build \
